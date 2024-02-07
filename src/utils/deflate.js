@@ -23,7 +23,9 @@ function testCompressionStream() {
   try {
     const cs = new CompressionStream('deflate')
     // Test if `Blob.stream` is present. React Native does not have the `stream` method
-    new Blob([]).stream()
+    const stream = new Blob([]).stream()
+    // Clean up so that a resource is not left dangling, causing Deno tests to fail
+    stream.cancel()
     if (cs) return true
   } catch (_) {
     // no bother
